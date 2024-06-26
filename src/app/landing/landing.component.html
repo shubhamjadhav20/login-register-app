@@ -1,0 +1,27 @@
+<app-navbar></app-navbar>
+<div class="book-listing">
+  
+
+  <div *ngIf="isAdmin" class="button-container">
+    <button mat-button (click)="openAddBookModal()">Add Book</button>
+  </div>
+
+  <div *ngFor="let book of books" class="book-card">
+    <div class="book-info">
+      <h3>{{ book.title }}</h3>
+      <p><strong>Author:</strong> {{ book.author }}</p>
+      <p><strong>Publication Date:</strong> {{ book.publicationDate | date }}</p>
+      <p><strong>Price:</strong> ${{ book.price }}</p>
+    </div>
+    <div *ngIf="isAdmin" class="book-actions">
+      <button mat-button (click)="openEditBookModal(book)">Edit</button>
+      <button mat-button (click)="deleteBook(book._id)">Delete</button>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button mat-button (click)="previousPage()" [disabled]="page === 1">Previous</button>
+    <button mat-button (click)="nextPage()">Next</button>
+    <!-- <button mat-button (click)="logout()">Logout</button> -->
+  </div>
+</div>
