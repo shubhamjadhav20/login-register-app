@@ -18,6 +18,8 @@ interface Book {
   styleUrls: ['./landing.component.css']
 })
 export class LandingComponent implements OnInit {
+  
+  
   books: any[] = [];
   newBook: Book = { id: 0, title: '', author: '' };
   page: number = 1;

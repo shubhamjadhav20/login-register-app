@@ -13,6 +13,11 @@ export class AuthService {
 
   constructor(private http: HttpClient,private router: Router, private localStorageService:LocalStorageService) {}
 
+  logout(): void {
+    localStorage.removeItem('token');
+    // Any other cleanup needed
+    this.router.navigate(['/login']);
+  }
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, password });
   }
@@ -33,11 +38,11 @@ export class AuthService {
   isLoggedIn(): boolean {
     return this.getToken() !== null;
   }
-  logout(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', token ? token : '');
-    return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
-  }
+  // logout(): Observable<any> {
+  //   const token = localStorage.getItem('token');
+  //   const headers = new HttpHeaders().set('Authorization', token ? token : '');
+  //   return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
+  // }
 
   getUserRole(): string | null {
     const token = this.getToken();

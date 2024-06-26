@@ -27,8 +27,14 @@ export class EditBookModalComponent {
     this.dialogRef.close();
   }
 
-  onSave(): void {
+  async onSave(): Promise<void> {
     // Close the dialog and pass back the modified book data
     this.dialogRef.close(this.book);
+
+    // Wait for the dialog to close before reloading the page
+    await this.dialogRef.afterClosed().toPromise();
+
+    // Reload the page
+    window.location.reload();
   }
 }
