@@ -36,15 +36,17 @@ const authenticateToken = (req, res, next) => {
   if (!token) return res.sendStatus(401);
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) {return res.sendStatus(403);}
+    if (err) {
+      // console.log("Error");
+      return res.sendStatus(403);}
     req.user = user;
     next();
   });
 };
-const checkAdmin = (req, res, next) => {
-  if (req.user.role !== 'Admin') return res.sendStatus(403);
-  next();
-};
+// const checkAdmin = (req, res, next) => {
+//   if (req.user.role !== 'Admin') return res.sendStatus(403);
+//   next();
+// };
 app.put('/api/books/:id', async (req, res) => {
   const { title, author, publicationDate, price } = req.body;
   try {
@@ -90,13 +92,16 @@ app.post('/api/signup', async (req, res) => {
   }
 });
 // Get books with pagination
-app.get('/api/books', authenticateToken, async (req, res) => {
+app.get('/api/books',authenticateToken, async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 5;
   const skip = (page - 1) * limit;
+  console.log("server.js")
+ const {search} = req.query;
+ console.log(search)
   
   try {
-    const books = await Book.find().skip(skip).limit(limit).exec();
+    const books = await Book.find({ title: { $regex: search, $options: 'i' } }).skip(skip).limit(limit).exec();
     res.json(books);
   } catch (err) {
     res.status(500).send(err);

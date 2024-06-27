@@ -10,6 +10,80 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
 }
+.search-bar-container  {
+  width: 70%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.landing-container {
+  width: 80%;
+  margin: auto;
+  padding-top: 20px;
+}
+
+.search-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  margin-right: 100px;
+  width: 98%;
+  border-color: transparent;
+}
+
+.search-bar-container input[type="text"] {
+  width: 85%;
+  padding:5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.search-bar-container button {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #005CBB;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 16px;
+  margin-top: 15px;
+  
+}
+
+.book-listing {
+  margin-top: 20px;
+}
+
+.book-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
+  box-shadow: 1 1 8px rgba(0, 0, 0, 1);
+}
+
+.book-info {
+  margin-bottom: 16px;
+}
+
+.book-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination button {
+  margin: 0 4px;
+}
 
 .book-listing {
   flex: 1;

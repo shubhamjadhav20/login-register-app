@@ -18,7 +18,8 @@ interface Book {
   styleUrls: ['./landing.component.css']
 })
 export class LandingComponent implements OnInit {
-  
+
+  search: any="";
   filteredBooks: any[] = [];
   books: any[] = [];
   newBook: Book = { id: 0, title: '', author: '' };
@@ -87,7 +88,7 @@ openEditBookModal(book: any): void {
     );
   }
   loadBooks(): void {
-    this.bookService.getBooks(this.page).subscribe(
+    this.bookService.getBooks(this.page,this.search).subscribe(
       res => {
         this.books = res;
       },
@@ -135,6 +136,12 @@ openEditBookModal(book: any): void {
       this.router.navigate(['/add-book']);
     }
   
+
+    onSearchBooks() {
+      console.log("form landing serach" +this.search);
+      this.loadBooks();
+      
+      }
 }
 
  

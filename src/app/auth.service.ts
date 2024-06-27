@@ -22,6 +22,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, password });
   }
   getBooks(page: number): Observable<any> {
+    console.log("authService")
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/books?page=${page}`, { headers });

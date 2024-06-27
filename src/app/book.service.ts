@@ -25,11 +25,11 @@ export class BookService {
     return this.http.get<any>(`${this.apiUrl}/search`, { headers, params });
   }
 
-  getBooks(page: number): Observable<any> {
+  getBooks(page: number,search:string): Observable<any> {
     const token = this.authService.getToken(); // Assuming authService.getToken() retrieves the JWT token
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const params = { page: page.toString() };
-
+    const params = { page: page.toString() ,search: search};
+    console.log("book.service")
     return this.http.get<any>(this.apiUrl, { headers, params });
   }
   addBook(book: any): Observable<any> {

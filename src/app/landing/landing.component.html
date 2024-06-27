@@ -1,9 +1,13 @@
-<app-navbar (search)="onSearch($event)"></app-navbar>
+<app-navbar></app-navbar>
 <div class="landing-container">
-  <div class="book-listing">
+  <div class="search-bar-container">
+    <input type="text" [(ngModel)]="search" placeholder="Search Books" (keyup)="onSearchBooks()">
     <div *ngIf="isAdmin" class="button-container">
       <button mat-button (click)="openAddBookModal()">Add Book</button>
     </div>
+  </div>
+  <div class="book-listing">
+    
     <div *ngFor="let book of books" class="book-card">
       <div class="book-info">
         <h3>{{ book.title }}</h3>
