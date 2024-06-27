@@ -1,8 +1,8 @@
-<nav class="navbar">
-  <div class="navbar-brand">
-    <h1>Book Listing</h1>
-  </div>
-  <div class="navbar-actions">
-    <button mat-button class="logout button">Log Out</button>
-  </div>
-</nav>
+<mat-toolbar class="toolbar"color="primary">
+  <span>Book Listing</span>
+  <span class="spacer"></span>
+  <mat-form-field>
+    <input matInput placeholder="Search" [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange($event)">
+  </mat-form-field>
+  <button mat-button >Logout</button>
+</mat-toolbar>

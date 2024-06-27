@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-add-book-modal',
@@ -24,6 +25,10 @@ export class AddBookModalComponent {
   }
 
   onSave(): void {
+    if(this.book.price<200){
     this.dialogRef.close(this.book);
+    }else{
+      console.log('Price is greater than 200, Cant accept book')
+    }
   }
 }

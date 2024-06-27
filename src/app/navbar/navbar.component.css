@@ -1,19 +1,61 @@
-.navbar {
-  background-color: #343a40;
-  color: #fff;
+/* navbar.component.css */
+
+/* General styles for the navbar */
+mat-toolbar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  height: 40px;
+  background-color: #1976d2; /* Primary color */
+  color: white;
 }
 
-.navbar-brand h1 {
-  margin: 0;
-  font-size: 24px;
+/* Spacer to push items to the right */
+.spacer {
+  flex: 1;
 }
 
-.navbar-actions {
-  display: flex;
-  align-items: center;
+/* Styles for the search input field */
+mat-form-field {
+  width: 250px;
+  margin-right: 20px;
+  margin-top: 23px;
+  border-radius: 5px;
+  height: 69px;
+}
+
+/* Search input field specific styling */
+input[matInput] {
+  color: white;
+}
+
+mat-form-field .mat-form-field-underline {
+  background-color: white;
+}
+
+mat-form-field .mat-form-field-label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+mat-form-field .mat-input-element {
+  color: white;
+}
+
+mat-form-field .mat-form-field-ripple {
+  background-color: white;
+}
+
+/* Styles for the logout button */
+button[mat-button] {
+  color: white;
+  border: 1px solid white;
+  border-radius: 4px;
+  padding: 8px 16px;
+}
+
+button[mat-button]:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+button[mat-button]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
 }

@@ -106,12 +106,19 @@ app.get('/api/books', authenticateToken, async (req, res) => {
 // Add a new book
 app.post('/api/books',  async (req, res) => {
   const book = new Book(req.body);
+  console.log(book);
+  
   try {
+    if(book.price>150){
     const savedBook = await book.save();
-    res.json(savedBook);
+    res.json(savedBook);}
+    else{
+      res.status(400).send('Price issue');
+    }
   } catch (err) {
     res.status(500).send(err);
   }
+
 });
 
 // Delete a book

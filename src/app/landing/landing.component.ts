@@ -19,7 +19,7 @@ interface Book {
 })
 export class LandingComponent implements OnInit {
   
-  
+  filteredBooks: any[] = [];
   books: any[] = [];
   newBook: Book = { id: 0, title: '', author: '' };
   page: number = 1;
@@ -53,6 +53,10 @@ export class LandingComponent implements OnInit {
         this.addBook(result);
       }
   });
+  
+}
+onSearch(query: string): void {
+  this.filteredBooks = this.books.filter(book => book.title.toLowerCase().includes(query.toLowerCase()));
 }
 openEditBookModal(book: any): void {
   const dialogRef = this.dialog.open(EditBookModalComponent, {
@@ -94,6 +98,7 @@ openEditBookModal(book: any): void {
   }
 
   addBook(book:any): void {
+    console.log(book);
     this.bookService.addBook(book).subscribe(
       res => {
         this.loadBooks();

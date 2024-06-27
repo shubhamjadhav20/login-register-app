@@ -17,6 +17,7 @@ import { AddBookModalComponent } from './add-book-modal/add-book-modal.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditBookModalComponent } from './edit-book-modal/edit-book-modal.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { MatToolbarModule } from '@angular/material/toolbar'
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatToolbarModule
   ],
   providers: [
     provideClientHydration(),

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
@@ -17,6 +17,13 @@ export class BookService {
   private apiUrl = 'http://localhost:3000/api/books';
 
   constructor(private http: HttpClient, private authService:AuthService) {}
+  searchBooksByTitle(title: string): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const params = new HttpParams().set('title', title);
+
+    return this.http.get<any>(`${this.apiUrl}/search`, { headers, params });
+  }
 
   getBooks(page: number): Observable<any> {
     const token = this.authService.getToken(); // Assuming authService.getToken() retrieves the JWT token
