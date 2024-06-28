@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { ViewService } from '../view.service';
 
 
 @Component({
@@ -11,7 +12,7 @@ export class NavbarComponent implements OnInit {
   searchQuery: string = '';
   isAdmin:boolean=false;
   userStatus:string='Guest';
-  constructor(private authService:AuthService){}
+  constructor(private authService:AuthService, private viewService:ViewService){}
   ngOnInit(): void {
     this.isAdmin = this.authService.getUserRole() === 'Admin';
     if(this.isAdmin){
@@ -21,6 +22,15 @@ export class NavbarComponent implements OnInit {
       this.userStatus='Guest';
     }
     // this.loadBooks();
+  }
+  toggleView(): void {
+    this.viewService.toggleView();
+
+    if (this.userStatus === 'Admin') {
+      this.userStatus = 'Guest';
+    } else {
+      this.userStatus = 'Admin';
+    }
   }
 
   @Output() search: EventEmitter<string> = new EventEmitter<string>();

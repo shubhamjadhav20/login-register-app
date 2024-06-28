@@ -1,7 +1,7 @@
 <mat-toolbar class="toolbar"color="primary">
   <span>Book Listing</span>
   <span class="spacer"></span>
-  <button mat-button class="roleLink">{{userStatus}}</button>
+  <button mat-button class="roleLink" (click)="toggleView()">{{userStatus}} View</button>
   <!-- <mat-form-field>
     <input matInput placeholder="Search" [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange($event)">
   </mat-form-field> -->

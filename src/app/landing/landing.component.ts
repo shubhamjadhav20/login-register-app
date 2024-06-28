@@ -6,6 +6,8 @@ import { AddBookModalComponent } from '../add-book-modal/add-book-modal.componen
 import { MatDialog } from '@angular/material/dialog';
 import { EditBookModalComponent } from '../edit-book-modal/edit-book-modal.component';
 import { PageEvent } from '@angular/material/paginator';
+import { ViewService } from '../view.service';
+
 
 interface Book {
   id: number;
@@ -28,9 +30,12 @@ export class LandingComponent implements OnInit {
   isAdmin:boolean=false;
   totalBooks: any="";
 
-  constructor(private bookService: BookService, private authService:AuthService,private router:Router,public dialog:MatDialog) {}
+  constructor(private viewService: ViewService,private bookService: BookService, private authService:AuthService,private router:Router,public dialog:MatDialog) {}
 
   ngOnInit(): void {
+    this.viewService.currentView.subscribe(isAdminView => {
+      this.isAdmin = isAdminView && this.authService.getUserRole() === 'Admin';
+    });
     this.isAdmin = this.authService.getUserRole() === 'Admin';
     this.loadBooks();
   }
