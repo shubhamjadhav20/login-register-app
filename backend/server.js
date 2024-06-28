@@ -101,8 +101,12 @@ app.get('/api/books',authenticateToken, async (req, res) => {
  console.log(search)
   
   try {
-    const books = await Book.find({ title: { $regex: search, $options: 'i' } }).skip(skip).limit(limit).exec();
-    res.json(books);
+    const books = await Book.find({ title: { $regex: search, $options: 'i' } }).skip(skip).limit(limit);
+    console.log(books);
+    const totalBooks= await Book.countDocuments({ title: { $regex: search, $options: 'i' } });
+    console.log(books);
+    console.log(totalBooks);
+    res.json({books,totalBooks});
   } catch (err) {
     res.status(500).send(err);
   }

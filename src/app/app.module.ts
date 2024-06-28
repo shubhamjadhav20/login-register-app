@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditBookModalComponent } from './edit-book-modal/edit-book-modal.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar'
+import { MatPaginatorModule} from '@angular/material/paginator'
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { MatToolbarModule } from '@angular/material/toolbar'
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatPaginatorModule
   ],
   providers: [
     provideClientHydration(),

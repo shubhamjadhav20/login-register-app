@@ -38,6 +38,9 @@ mat-form-field .mat-form-field-label {
 mat-form-field .mat-input-element {
   color: white;
 }
+.roleLink{
+  margin-right: 10px;
+}
 
 mat-form-field .mat-form-field-ripple {
   background-color: white;
@@ -46,7 +49,8 @@ mat-form-field .mat-form-field-ripple {
 /* Styles for the logout button */
 button[mat-button] {
   color: white;
-  border: 1px solid white;
+  background-color: #1976d2;
+  border: 1px solid transparent;
   border-radius: 4px;
   padding: 8px 16px;
 }

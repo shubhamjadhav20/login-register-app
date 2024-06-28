@@ -5,6 +5,7 @@ import { BookService } from '../book.service';
 import { AddBookModalComponent } from '../add-book-modal/add-book-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { EditBookModalComponent } from '../edit-book-modal/edit-book-modal.component';
+import { PageEvent } from '@angular/material/paginator';
 
 interface Book {
   id: number;
@@ -25,6 +26,7 @@ export class LandingComponent implements OnInit {
   newBook: Book = { id: 0, title: '', author: '' };
   page: number = 1;
   isAdmin:boolean=false;
+  totalBooks: any="";
 
   constructor(private bookService: BookService, private authService:AuthService,private router:Router,public dialog:MatDialog) {}
 
@@ -89,8 +91,10 @@ openEditBookModal(book: any): void {
   }
   loadBooks(): void {
     this.bookService.getBooks(this.page,this.search).subscribe(
-      res => {
-        this.books = res;
+      (res) => {
+        this.books = res.books;
+        this.totalBooks=res.totalBooks;
+
       },
       err => {
         console.error('Error loading books', err);
@@ -132,13 +136,17 @@ openEditBookModal(book: any): void {
         this.loadBooks();
       }
     }
+    onPageChange(event:PageEvent){
+      this.page=event.pageIndex+1;
+      this.loadBooks();
+    }
     navigateToAddBook(): void {
       this.router.navigate(['/add-book']);
     }
   
 
     onSearchBooks() {
-      console.log("form landing serach" +this.search);
+      // console.log("form landing serach" +this.search);
       this.loadBooks();
       
       }

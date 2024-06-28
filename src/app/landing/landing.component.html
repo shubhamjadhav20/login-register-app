@@ -21,8 +21,17 @@
       </div>
     </div>
   </div>
-  <div class="pagination">
+
+  <!-- <div class="pagination">
     <button mat-button (click)="previousPage()" [disabled]="page === 1">Previous</button>
     <button mat-button (click)="nextPage()">Next</button>
-  </div>
+  </div> -->
+  <!-- [length]="100" -->
+    <mat-paginator 
+             [length]="totalBooks"
+              [pageSize]="5"
+              [pageIndex]="page-1"
+              (page)="onPageChange($event)"
+              aria-label="Select page">
+</mat-paginator>
 </div>
