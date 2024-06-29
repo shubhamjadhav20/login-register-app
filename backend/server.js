@@ -7,6 +7,7 @@ const connectDB=require('./config/db')
 const app = express();
 const port = 3000;
 const bcrypt = require('bcryptjs')
+// const User = require('./models/User')
 
 const JWT_SECRET = 'your_jwt_secret_key';
 
@@ -15,16 +16,19 @@ app.use(cors());
 
 connectDB();
 const userSchema = new mongoose.Schema({
+  username:{type:String,required:true},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ['Guest', 'Admin'], default: 'Guest' }
+    role: { type: String, enum: ['Guest', 'Admin'], default: 'Guest' },
+    
   });
   
 const bookSchema = new mongoose.Schema({
   title: String,
   author: String,
   publicationDate:Date,
-  price:Number
+  price:Number,
+  
 });
 const User=mongoose.model('User',userSchema);
 const Book = mongoose.model('Book', bookSchema);
@@ -80,12 +84,14 @@ app.post('/logout', authenticateToken, (req, res) => {
 });
 app.post('/api/signup', async (req, res) => {
   console.log('test');
-  const { email, password, role } = req.body;
+  const { username,email, password, role} = req.body;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ email, password: hashedPassword, role });
-    const savedUser = await user.save();
+    const user = new User({ username,email, password: hashedPassword, role });
+    console.log('Signup request:',req.body);
+    console.log(username);
+    const savedUser = user.save();
     res.status(201).json(savedUser);
   } catch (err) {
     res.status(500).send(err);

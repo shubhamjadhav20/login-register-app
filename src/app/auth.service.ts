@@ -29,8 +29,10 @@ export class AuthService {
   }
   
 
-  signup(email: string, password: string, role:string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/signup`, { email, password,role });
+  signup(username:string,email: string, password: string, role:string): Observable<any> {
+    console.log('in auth',username)
+    return this.http.post<any>(`${this.apiUrl}/signup`, {username, email, password,role });
+    
   }
   getToken(): string | null {
     return this.localStorageService.getItem('token');
