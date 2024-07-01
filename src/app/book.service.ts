@@ -33,6 +33,7 @@ export class BookService {
     return this.http.get<any>(this.apiUrl, { headers, params });
   }
   addBook(book: any): Observable<any> {
+    console.log('add book from bookservice',book)
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', token || '');
     return this.http.post<any>(this.apiUrl, book, { headers });

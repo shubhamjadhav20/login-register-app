@@ -7,6 +7,7 @@ const connectDB=require('./config/db')
 const app = express();
 const port = 3000;
 const bcrypt = require('bcryptjs')
+// const Book = require('./models/Book')
 // const User = require('./models/User')
 
 const JWT_SECRET = 'your_jwt_secret_key';
@@ -20,17 +21,18 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ['Guest', 'Admin'], default: 'Guest' },
-    
-  });
-  
+    // userId:{type:String,required:true}
+    });
+
+
 const bookSchema = new mongoose.Schema({
   title: String,
   author: String,
   publicationDate:Date,
   price:Number,
-  
+  addedBy:{ type: mongoose.Schema.Types.ObjectId }
 });
-const User=mongoose.model('User',userSchema);
+const User = mongoose.model('User', userSchema);
 const Book = mongoose.model('Book', bookSchema);
 
 // Middleware to check JWT token
@@ -44,6 +46,7 @@ const authenticateToken = (req, res, next) => {
       // console.log("Error");
       return res.sendStatus(403);}
     req.user = user;
+    console.log('User Authenticated',req.user);
     next();
   });
 };
@@ -87,6 +90,10 @@ app.post('/api/signup', async (req, res) => {
   const { username,email, password, role} = req.body;
 
   try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email already exists' });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ username,email, password: hashedPassword, role });
     console.log('Signup request:',req.body);
@@ -98,39 +105,102 @@ app.post('/api/signup', async (req, res) => {
   }
 });
 // Get books with pagination
-app.get('/api/books',authenticateToken, async (req, res) => {
+app.get('/api/books',  async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 5;
   const skip = (page - 1) * limit;
-  console.log("server.js")
- const {search} = req.query;
- console.log(search)
-  
+  const { search,addedBy } = req.query;
+
   try {
-    const books = await Book.find({ title: { $regex: search, $options: 'i' } }).skip(skip).limit(limit);
-    console.log(books);
-    const totalBooks= await Book.countDocuments({ title: { $regex: search, $options: 'i' } });
-    console.log(books);
-    console.log(totalBooks);
-    res.json({books,totalBooks});
+    const matchStage = search
+      ? { title: { $regex: search, $options: 'i' } }
+      : {};
+
+    const booksPipeline = [
+      { $match: matchStage },
+      { $skip: skip },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: 'users', 
+          localField: 'addedBy',
+          foreignField: '_id',
+          as: 'userDetails'
+        }
+      },
+      { $unwind: { path: '$userDetails', preserveNullAndEmptyArrays: true } },
+      {
+        $project: {
+          title: 1,
+          author: 1,
+          publicationDate: 1,
+          price: 1,
+          addedBy: '$userDetails.username' 
+        }
+      }
+    ];
+
+    const books = await Book.aggregate(booksPipeline).exec();
+    const totalBooks = await Book.countDocuments(matchStage);
+
+    res.json({ books, totalBooks });
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
+//   try {
+//     const match = search ? { title: { $regex: search, $options: 'i' } } : {};
+
+//     const books = await Book.aggregate([
+//       { $match: match },
+//       { $skip: skip },
+//       { $limit: limit },
+//       { 
+//         $lookup: {
+//           from: 'users', // The collection name in MongoDB
+//           localField: 'addedBy',
+//           foreignField: '_id',
+//           as: 'userDetails'
+//         }
+//       },
+//       { $unwind: '$userDetails' },
+//       {
+//         $project: {
+//           title: 1,
+//           author: 1,
+//           publicationDate: 1,
+//           price: 1,
+//           addedBy: '$userDetails.username' // Assuming 'username' is the field in User model
+//         }
+//       }
+//     ]);
+//     const totalBooks = await Book.countDocuments(match);
+
+//     res.json({ books, totalBooks });
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// });
+
+
 // Add a new book
 app.post('/api/books',  async (req, res) => {
+  const { title, author, publicationDate, price } = req.body;
+
   const book = new Book(req.body);
+
   console.log(book);
   
   try {
-    if(book.price>150){
+    
     const savedBook = await book.save();
-    res.json(savedBook);}
-    else{
-      res.status(400).send('Price issue');
-    }
+    res.json(savedBook);
+    
+      
+    
   } catch (err) {
+    res.status(400).send('Price issue');
     res.status(500).send(err);
   }
 

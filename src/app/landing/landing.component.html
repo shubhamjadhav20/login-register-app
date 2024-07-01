@@ -14,6 +14,7 @@
         <p><strong>Author:</strong> {{ book.author }}</p>
         <p><strong>Publication Date:</strong> {{ book.publicationDate | date }}</p>
         <p><strong>Price:</strong> ${{ book.price }}</p>
+        <p><strong>Added By:</strong>{{book.addedBy}}</p>
       </div>
       <div *ngIf="isAdmin" class="book-actions">
         <button mat-button (click)="openEditBookModal(book)">Edit</button>

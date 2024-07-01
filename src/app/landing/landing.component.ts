@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditBookModalComponent } from '../edit-book-modal/edit-book-modal.component';
 import { PageEvent } from '@angular/material/paginator';
 import { ViewService } from '../view.service';
+import { HttpClient } from '@angular/common/http';
 
 
 interface Book {
@@ -30,7 +31,7 @@ export class LandingComponent implements OnInit {
   isAdmin:boolean=false;
   totalBooks: any="";
 
-  constructor(private viewService: ViewService,private bookService: BookService, private authService:AuthService,private router:Router,public dialog:MatDialog) {}
+  constructor(private viewService: ViewService,private bookService: BookService, private authService:AuthService,private router:Router,public dialog:MatDialog,private http: HttpClient) {}
 
   ngOnInit(): void {
     this.viewService.currentView.subscribe(isAdminView => {
@@ -99,7 +100,7 @@ openEditBookModal(book: any): void {
       (res) => {
         this.books = res.books;
         this.totalBooks=res.totalBooks;
-
+        console.log('Load Books',this.books)
       },
       err => {
         console.error('Error loading books', err);
@@ -108,15 +109,15 @@ openEditBookModal(book: any): void {
   }
 
   addBook(book:any): void {
-    console.log(book);
+    // console.log(book);
     this.bookService.addBook(book).subscribe(
       res => {
         this.loadBooks();
       },
       err => {
         console.error('Error adding book', err);
-      }
-    );
+        }
+      );
     }
     deleteBook(bookId: string): void {
       const id= Number(bookId);
